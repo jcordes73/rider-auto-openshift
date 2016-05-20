@@ -5,7 +5,8 @@
   "metadata": {
     "annotations": {
       "Description": "Backend part of the Rider-Auto JBoss Fuse demo on OpenShift Enterprise.",
-      "iconClass": "icon-java"
+      "iconClass": "icon-java",
+      "fabric8.rider-auto-backend/iconUrl" : "https://cdn.rawgit.com/fabric8io/fabric8/master/fabric8-maven-plugin/src/main/resources/icons/camel.svg"
     },
     "labels": {},
     "name": "rider-auto-backend"
@@ -59,7 +60,7 @@
     {
       "name": "ARTIFACT_DIR",
       "description": "Maven build directory",
-      "value": "auto-rider-backend"
+      "value": "rider-auto-backend"
     },
     {
       "description": "Namespace in which the Fuse ImageStreams are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project.",
@@ -263,10 +264,6 @@
                     }
                 ],
                 "ports": [
-                  {
-                    "containerPort": 8181,
-                    "name": "http"
-                  },
                   {
                     "containerPort": 8778,
                     "name": "jolokia"
