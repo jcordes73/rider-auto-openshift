@@ -17,24 +17,17 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>org.fusesource.examples</groupId>
     <artifactId>rider-auto-osgi</artifactId>
     <version>5.0-SNAPSHOT</version>
   </parent>
-
   <artifactId>rider-auto-backend</artifactId>
   <packaging>bundle</packaging>
-
   <name>Rider Auto OSGi Example :: Backend</name>
   <url>http://fusesource.com</url>
-
   <dependencies>
     <!-- Karaf microcontainer dependencies -->
     <dependency>
@@ -87,44 +80,37 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
-
     <dependency>
       <groupId>io.fabric8.mq</groupId>
       <artifactId>camel-amq</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.fusesource.examples</groupId>
       <artifactId>rider-auto-common</artifactId>
     </dependency>
-
     <!-- Spring container support -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
       <scope>runtime</scope>
     </dependency>
-
     <!-- Add support for JAXB marshaling -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jaxb</artifactId>
       <scope>runtime</scope>
     </dependency>
-
     <!-- ActiveMQ connectivity for Camel -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-camel</artifactId>
       <scope>runtime</scope>
     </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <scope>runtime</scope>
     </dependency>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -151,7 +137,6 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <build>
     <finalName>${project.artifactId}</finalName>
     <resources>
@@ -242,7 +227,6 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
           </execution>
         </executions>
       </plugin>
-
       <!-- 2. create karaf assembly -->
       <!-- karaf-maven-plugin creates custom microservice distribution -->
       <plugin>
@@ -272,27 +256,26 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
           <useReferenceUrls>true</useReferenceUrls>
           <!-- do not include build output directory -->
           <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
-          <!-- no startupFeatures -->a
+          <!-- no startupFeatures -->
           <startupFeatures>
-                <feature>karaf-framework</feature>
-                <feature>shell</feature>
-                <feature>jaas</feature>
-                <feature>spring</feature>
-                <feature>activemq-client</feature>
-                <feature>activemq-camel</feature>
-                <feature>camel-spring</feature>
-                <feature>camel-bindy</feature>
-              </startupFeatures>
-              <startupBundles>
-                <!--  this needs to be here for spring-dm to resolve properly!!-->
-                <bundle>mvn:org.apache.karaf.bundle/org.apache.karaf.bundle.core/3.0.4</bundle>
-                <bundle>mvn:io.fabric8.mq/mq-client/2.2.0.redhat-079</bundle>
-                <bundle>mvn:io.fabric8/fabric8-utils/2.2.0.redhat-079</bundle>
-                <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
-              </startupBundles
+            <feature>karaf-framework</feature>
+            <feature>shell</feature>
+            <feature>jaas</feature>
+            <feature>spring</feature>
+            <feature>activemq-client</feature>
+            <feature>activemq-camel</feature>
+            <feature>camel-spring</feature>
+            <feature>camel-bindy</feature>
+          </startupFeatures>
+          <startupBundles>
+            <!--  this needs to be here for spring-dm to resolve properly!!-->
+            <bundle>mvn:org.apache.karaf.bundle/org.apache.karaf.bundle.core/3.0.4</bundle>
+            <bundle>mvn:io.fabric8.mq/mq-client/2.2.0.redhat-079</bundle>
+            <bundle>mvn:io.fabric8/fabric8-utils/2.2.0.redhat-079</bundle>
+            <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+          </startupBundles>
         </configuration>
       </plugin>
-
       <!-- 3. create docker image -->
       <plugin>
         <groupId>org.jolokia</groupId>
@@ -328,8 +311,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       </plugin>
     </plugins>
   </build>
-
-    <!--
+  <!--
   Default sample commands:
   mvn -Pf8-build         ... build Docker images and create OpenShift deployment configs
   mvn -Pf8-deploy        ... f8-build + push to Docker registry + applying deployment config to OpenShift
@@ -363,5 +345,4 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       </build>
     </profile>
   </profiles>
-
 </project>
