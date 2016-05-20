@@ -46,6 +46,7 @@
 		<karaf.version>2.4.0.redhat-621084</karaf.version>
 		<karaf.plugin.version>4.0.2.redhat-621079</karaf.plugin.version>
 		<spring.features.version>3.0.4</spring.features.version>
+                <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 	</properties>
 
 	<dependencyManagement>
