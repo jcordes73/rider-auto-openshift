@@ -137,21 +137,21 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <scope>test</scope>
     </dependency>
     <!-- testing -->
-        <dependency>
-          <groupId>org.jboss.arquillian.junit</groupId>
-          <artifactId>arquillian-junit-container</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>fabric8-arquillian</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.shrinkwrap.resolver</groupId>
-          <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
-          <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-arquillian</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <finalName>${project.artifactId}</finalName>
@@ -167,8 +167,8 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
       <plugin>
@@ -286,8 +286,8 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
           <startupBundles>
             <!--  this needs to be here for spring-dm to resolve properly!!-->
             <bundle>mvn:org.apache.karaf.bundle/org.apache.karaf.bundle.core/3.0.4</bundle>
-            <bundle>mvn:io.fabric8.mq/mq-client/2.2.0.redhat-079</bundle>
-            <bundle>mvn:io.fabric8/fabric8-utils/2.2.0.redhat-079</bundle>
+            <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
+            <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
             <bundle>mvn:${project.groupId}/rider-auto-common/${project.version}</bundle>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
@@ -339,7 +339,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
     <profile>
       <id>f8-build</id>
       <build>
-        <defaultGoal>clean install docker:build fabric8:json -DskipTests</defaultGoal>
+        <defaultGoal>clean install docker:build fabric8:json</defaultGoal>
       </build>
     </profile>
     <profile>
@@ -349,7 +349,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <fabric8.recreate>true</fabric8.recreate>
       </properties>
       <build>
-        <defaultGoal>clean install docker:build docker:push fabric8:json fabric8:apply -DskipTests</defaultGoal>
+        <defaultGoal>clean install docker:build docker:push fabric8:json fabric8:apply</defaultGoal>
       </build>
     </profile>
     <profile>
@@ -358,7 +358,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <fabric8.recreate>true</fabric8.recreate>
       </properties>
       <build>
-        <defaultGoal>clean install docker:build fabric8:json fabric8:apply -DskipTests</defaultGoal>
+        <defaultGoal>clean install docker:build fabric8:json fabric8:apply</defaultGoal>
       </build>
     </profile>
   </profiles>
