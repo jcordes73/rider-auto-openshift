@@ -322,7 +322,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
     <profile>
       <id>f8-build</id>
       <build>
-        <defaultGoal>clean install docker:build fabric8:json</defaultGoal>
+        <defaultGoal>clean install docker:build fabric8:json -DskipTests</defaultGoal>
       </build>
     </profile>
     <profile>
@@ -332,7 +332,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <fabric8.recreate>true</fabric8.recreate>
       </properties>
       <build>
-        <defaultGoal>clean install docker:build docker:push fabric8:json fabric8:apply</defaultGoal>
+        <defaultGoal>clean install docker:build docker:push fabric8:json fabric8:apply -DskipTests</defaultGoal>
       </build>
     </profile>
     <profile>
@@ -341,7 +341,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <fabric8.recreate>true</fabric8.recreate>
       </properties>
       <build>
-        <defaultGoal>clean install docker:build fabric8:json fabric8:apply</defaultGoal>
+        <defaultGoal>clean install docker:build fabric8:json fabric8:apply -DskipTests</defaultGoal>
       </build>
     </profile>
   </profiles>
