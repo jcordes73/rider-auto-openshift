@@ -153,31 +153,6 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
   </dependencies>
 
   <build>
-    <plugins>
-      <!-- generate OSGi bundle -->
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-      </plugin>
-      <!-- camel plugin-->
-      <plugin>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-maven-plugin</artifactId>
-      </plugin>
-      <!-- allows the route to be ran via 'mvn exec:java' -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.4.0</version>
-        <configuration>
-          <mainClass>org.apache.camel.spring.Main</mainClass>
-        </configuration>
-      </plugin>
-     </plugins>
-  </build>
-
-  <build>
     <finalName>${project.artifactId}</finalName>
     <resources>
       <resource>
