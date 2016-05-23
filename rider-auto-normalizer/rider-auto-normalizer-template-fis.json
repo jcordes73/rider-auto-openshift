@@ -4,17 +4,17 @@
   "labels": {},
   "metadata": {
     "annotations": {
-      "Description": "Backend part of the Rider-Auto JBoss Fuse demo on OpenShift Enterprise.",
+      "Description": "Normalizer part of the Rider-Auto JBoss Fuse demo on OpenShift Enterprise.",
       "iconClass": "icon-java",
-      "fabric8.rider-auto-backend/iconUrl" : "https://cdn.rawgit.com/fabric8io/fabric8/master/fabric8-maven-plugin/src/main/resources/icons/camel.svg"
+      "fabric8.rider-auto-normalizer/iconUrl" : "https://cdn.rawgit.com/fabric8io/fabric8/master/fabric8-maven-plugin/src/main/resources/icons/camel.svg"
     },
     "labels": {},
-    "name": "rider-auto-backend"
+    "name": "rider-auto-normalizer"
   },
   "parameters": [
     {
       "name": "APP_NAME",
-      "value": "rider-auto-backend",
+      "value": "rider-auto-normalizer",
       "description": "Application Name"
     },
     {
@@ -29,7 +29,7 @@
     },
     {
       "name": "SERVICE_NAME",
-      "value": "rider-auto-backend",
+      "value": "rider-auto-normalizer",
       "description": "Exposed Service name"
     },
     {
@@ -55,12 +55,12 @@
     {
       "name": "MAVEN_ARGS_APPEND",
       "description": "Extra arguments passed to mvn, e.g. for multi-module builds",
-      "value": "-pl org.fusesource.examples:rider-auto-backend -am -Pkaraf-distro"
+      "value": "-pl org.fusesource.examples:rider-auto-normalizer -am -Pkaraf-distro"
     },
     {
       "name": "ARTIFACT_DIR",
       "description": "Maven build directory",
-      "value": "rider-auto-backend/target/"
+      "value": "rider-auto-normalizer/target/"
     },
     {
       "description": "Namespace in which the Fuse ImageStreams are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project.",
