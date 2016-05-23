@@ -17,17 +17,24 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.fusesource.examples</groupId>
     <artifactId>rider-auto-osgi</artifactId>
     <version>5.0-SNAPSHOT</version>
   </parent>
+
   <artifactId>rider-auto-backend</artifactId>
   <packaging>bundle</packaging>
+
   <name>Rider Auto OSGi Example :: Backend</name>
   <url>http://fusesource.com</url>
+
   <dependencies>
     <!-- Karaf microcontainer dependencies -->
     <dependency>
@@ -80,37 +87,44 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
+
     <dependency>
       <groupId>io.fabric8.mq</groupId>
       <artifactId>camel-amq</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.fusesource.examples</groupId>
       <artifactId>rider-auto-common</artifactId>
     </dependency>
+
     <!-- Spring container support -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
       <scope>runtime</scope>
     </dependency>
+
     <!-- Add support for JAXB marshaling -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jaxb</artifactId>
       <scope>runtime</scope>
     </dependency>
+
     <!-- ActiveMQ connectivity for Camel -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-camel</artifactId>
       <scope>runtime</scope>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <scope>runtime</scope>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -136,7 +150,6 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <artifactId>activemq-broker</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- testing -->
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
@@ -153,213 +166,213 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
-    <finalName>${project.artifactId}</finalName>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
     <plugins>
-      <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
+      <!-- generate OSGi bundle -->
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
-        <version>${version.maven-bundle-plugin}</version>
         <extensions>true</extensions>
+      </plugin>
+      <!-- camel plugin-->
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-maven-plugin</artifactId>
+      </plugin>
+      <!-- allows the route to be ran via 'mvn exec:java' -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.4.0</version>
         <configuration>
-          <instructions>
-            <Import-Package>io.fabric8.mq.core,
-              io.fabric8.mq.camel,
-              org.apache.activemq.pool,
-              *</Import-Package>
-          </instructions>
+          <mainClass>org.apache.camel.spring.Main</mainClass>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
-        <executions>
-          <execution>
-            <id>filter-extra-resources</id>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <phase>process-resources</phase>
-            <configuration>
-              <outputDirectory>${project.build.directory}/fabric8</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>src/main/fabric8</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fabric8.version}</version>
-        <executions>
-          <execution>
-            <id>json</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>json</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>attach</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attach</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- plugin goals have to be executed in order -->
-      <!-- 1. install the bundle -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-install-plugin</artifactId>
-        <version>2.5.2</version>
-        <executions>
-          <execution>
-            <id>install-bundle</id>
-            <goals>
-              <goal>install</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- 2. create karaf assembly -->
-      <!-- karaf-maven-plugin creates custom microservice distribution -->
-      <plugin>
-        <groupId>org.apache.karaf.tooling</groupId>
-        <artifactId>karaf-maven-plugin</artifactId>
-        <version>${karaf.plugin.version}</version>
-        <extensions>true</extensions>
-        <executions>
-          <execution>
-            <id>karaf-assembly</id>
-            <goals>
-              <goal>assembly</goal>
-            </goals>
-            <phase>install</phase>
-          </execution>
-          <execution>
-            <id>karaf-archive</id>
-            <goals>
-              <goal>archive</goal>
-            </goals>
-            <phase>install</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <!-- we are using karaf 2.4.x -->
-          <karafVersion>v24</karafVersion>
-          <useReferenceUrls>true</useReferenceUrls>
-          <!-- do not include build output directory -->
-          <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
-          <!-- no startupFeatures -->
-          <startupFeatures>
-            <feature>karaf-framework</feature>
-            <feature>shell</feature>
-            <feature>jaas</feature>
-            <feature>spring</feature>
-            <feature>activemq-client</feature>
-            <feature>activemq-camel</feature>
-            <feature>camel-spring</feature>
-            <feature>camel-bindy</feature>
-            <feature>camel-jaxb</feature>
-          </startupFeatures>
-          <startupBundles>
-            <!--  this needs to be here for spring-dm to resolve properly!!-->
-            <bundle>mvn:org.apache.karaf.bundle/org.apache.karaf.bundle.core/3.0.4</bundle>
-            <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
-            <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
-            <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
-          </startupBundles>
-        </configuration>
-      </plugin>
-      <!-- 3. create docker image -->
-      <plugin>
-        <groupId>org.jolokia</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>${docker.maven.plugin.version}</version>
-        <configuration>
-          <images>
-            <image>
-              <name>${docker.image}</name>
-              <build>
-                <from>${docker.from}</from>
-                <assembly>
-                  <basedir>/deployments</basedir>
-                  <user>jboss:jboss:jboss</user>
-                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-                    <id>${project.artifactId}</id>
-                    <files>
-                      <!-- copy karaf archive -->
-                      <file>
-                        <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
-                        <outputDirectory>/</outputDirectory>
-                      </file>
-                    </files>
-                  </inline>
-                </assembly>
-                <cmd>
-                  <shell>/deployments/deploy-and-run.sh</shell>
-                </cmd>
-              </build>
-            </image>
-          </images>
-        </configuration>
-      </plugin>
-    </plugins>
+     </plugins>
   </build>
-  <!--
-  Default sample commands:
-  mvn -Pf8-build         ... build Docker images and create OpenShift deployment configs
-  mvn -Pf8-deploy        ... f8-build + push to Docker registry + applying deployment config to OpenShift
-  mvn -Pf8-local-deploy ... deployment for a single node setup without pushing to a registry
-  For individual goal usage please consult the fabric8 documentation
-  -->
+
   <profiles>
     <profile>
-      <id>f8-build</id>
+      <id>fabric8</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <fabric8.service.name>${project.artifactId}</fabric8.service.name>
+        <fabric8.service.headless>true</fabric8.service.headless>
+
+        <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
+        <fabric8.metrics.port>9779</fabric8.metrics.port>
+        <!-- End Prometheus metrics stuff -->
+
+        <fabric8.label.component>${project.artifactId}</fabric8.label.component>
+        <fabric8.label.container>java</fabric8.label.container>
+        <fabric8.label.group>rider-auto</fabric8.label.group>
+        <fabric8.iconRef>camel</fabric8.iconRef>
+      </properties>
       <build>
-        <defaultGoal>clean install docker:build fabric8:json</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-maven-plugin</artifactId>
+            <version>${fabric8.version}</version>
+            <executions>
+              <execution>
+                <id>json</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>json</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>attach</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>attach</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
       </build>
     </profile>
     <profile>
-      <id>f8-deploy</id>
+      <id>karaf-distro</id>
       <properties>
-        <fabric8.imagePullPolicySnapshot>Always</fabric8.imagePullPolicySnapshot>
-        <fabric8.recreate>true</fabric8.recreate>
+        <docker.from>jboss-fuse-6/fis-karaf-openshift:1.0</docker.from>
       </properties>
       <build>
-        <defaultGoal>clean install docker:build docker:push fabric8:json fabric8:apply</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.karaf.tooling</groupId>
+            <artifactId>karaf-maven-plugin</artifactId>
+            <version>${karaf.plugin.version}</version>
+            <extensions>true</extensions>
+            <executions>
+              <execution>
+                <id>karaf-assembly</id>
+                <goals>
+                  <goal>assembly</goal>
+                </goals>
+                <phase>install</phase>
+              </execution>
+              <execution>
+                <id>karaf-archive</id>
+                <goals>
+                  <goal>archive</goal>
+                </goals>
+                <phase>install</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <karafVersion>v24</karafVersion>
+              <javase>1.8</javase>
+              <useReferenceUrls>true</useReferenceUrls>
+              <!-- do not include build output directory -->
+              <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
+              <!-- no startupFeatures -->
+              <startupFeatures>
+                <feature>karaf-framework</feature>
+                <feature>shell</feature>
+                <feature>jaas</feature>
+                <feature>spring</feature>
+                <feature>activemq-client</feature>
+                <feature>activemq-camel</feature>
+                <feature>camel-spring</feature>
+                <feature>camel-bindy</feature>
+              </startupFeatures>
+              <startupBundles>
+                <!--  this needs to be here for spring-dm to resolve properly!!-->
+                <bundle>mvn:org.apache.karaf.bundle/org.apache.karaf.bundle.core/3.0.4</bundle>
+                <bundle>mvn:io.fabric8.mq/mq-client/2.2.0.redhat-079</bundle>
+                <bundle>mvn:io.fabric8/fabric8-utils/2.2.0.redhat-079</bundle>
+                <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+              </startupBundles>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <configuration>
+              <images>
+                <image>
+                  <name>${docker.image}</name>
+                  <build>
+                    <from>${docker.from}</from>
+                    <assembly>
+                      <basedir>/deployments</basedir>
+                      <user>jboss:jboss:jboss</user>
+                      <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+                              xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                        <id>${project.artifactId}</id>
+                        <files>
+                          <!-- copy karaf archive -->
+                          <file>
+                            <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
+                            <outputDirectory>/</outputDirectory>
+                          </file>
+                        </files>
+                      </inline>
+                    </assembly>
+                    <cmd>
+                      <shell>/deployments/deploy-and-run.sh</shell>
+                    </cmd>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+          </plugin>
+        </plugins>
       </build>
     </profile>
     <profile>
-      <id>f8-local-deploy</id>
-      <properties>
-        <fabric8.recreate>true</fabric8.recreate>
-      </properties>
+      <id>hawtapp</id>
       <build>
-        <defaultGoal>clean install docker:build fabric8:json fabric8:apply</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>hawt-app-maven-plugin</artifactId>
+            <version>${fabric8.version}</version>
+            <executions>
+              <execution>
+                <id>hawt-app</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <javaMainClass>org.apache.camel.spring.Main</javaMainClass>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <configuration>
+              <images>
+                <image>
+                  <name>${docker.image}</name>
+                  <build>
+                    <from>${docker.from}</from>
+                    <assembly>
+                      <basedir>/deployments</basedir>
+                      <descriptorRef>hawt-app</descriptorRef>
+                    </assembly>
+                    <env>
+                      <JAVA_LIB_DIR>/deployments/lib</JAVA_LIB_DIR>
+                      <JAVA_MAIN_CLASS>org.apache.camel.spring.Main</JAVA_MAIN_CLASS>
+                    </env>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>
+
 </project>

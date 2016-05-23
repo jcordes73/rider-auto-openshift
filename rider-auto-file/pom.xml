@@ -143,6 +143,21 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <artifactId>activemq-broker</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-arquillian</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>    
@@ -219,30 +234,6 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <fabric8.label.group>rider-auto</fabric8.label.group>
         <fabric8.iconRef>camel</fabric8.iconRef>
       </properties>
-      <dependencies>
-
-        <!-- testing -->
-        <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.junit</groupId>
-          <artifactId>arquillian-junit-container</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>fabric8-arquillian</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.shrinkwrap.resolver</groupId>
-          <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
       <build>
         <plugins>
           <plugin>
