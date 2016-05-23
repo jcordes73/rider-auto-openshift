@@ -269,13 +269,51 @@
                     "name": "jolokia"
                   }
                 ],
+                "securityContext" : { },
+                "volumeMounts" : [ {
+                  "mountPath" : "/deployments/target/placeorder",
+                  "name" : "rider-auto-file-volume",
+                  "readOnly" : false
+                } ],
                 "resources": {}
               }
-            ]
+            ],
+            "imagePullSecrets" : [ ],
+            "nodeSelector" : { },
+            "volumes" : [ {
+              "name" : "rider-auto-file-volume",
+              "persistentVolumeClaim" : {
+                "claimName" : "rider-auto-file-pvc",
+                "readOnly" : false
+              }
+            } ]
           }
         }
       },
       "status": {}
+    },
+    {
+      "apiVersion" : "v1",
+      "kind" : "PersistentVolumeClaim",
+      "metadata" : {
+        "annotations" : { },
+        "labels" : {
+          "project" : "rider-auto-file",
+          "component" : "rider-auto-file",
+          "provider" : "fabric8",
+          "group" : "rider-auto"
+        },
+        "name" : "rider-auto-file-pvc"
+      },
+      "spec" : {
+        "accessModes" : [ "ReadWriteOnce" ],
+        "resources" : {
+          "limits" : { },
+          "requests" : {
+            "storage" : "100Ki"
+          }
+        }
+      }
     }
   ]
 }

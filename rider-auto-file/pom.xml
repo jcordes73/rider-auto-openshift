@@ -22,13 +22,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>org.fusesource.examples</groupId>
     <artifactId>rider-auto-osgi</artifactId>
     <version>5.0-SNAPSHOT</version>
   </parent>
-  
+
   <artifactId>rider-auto-file</artifactId>
   <packaging>bundle</packaging>
 
@@ -91,11 +91,6 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
     <dependency>
       <groupId>io.fabric8.mq</groupId>
       <artifactId>camel-amq</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.fusesource.examples</groupId>
-      <artifactId>rider-auto-common</artifactId>
     </dependency>
 
     <!-- Spring container support -->
@@ -187,6 +182,20 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
 
   <profiles>
     <profile>
+      <id>kube-generate</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <!--  Use this to modify the kubernetes.json -->
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-generator</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
       <id>fabric8</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -242,6 +251,18 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       </properties>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*ModelProcessor.java</exclude>
+              </excludes>
+              <testExcludes>
+                <exclude>**/*KT.java</exclude>
+              </testExcludes>
+            </configuration>
+          </plugin>
           <plugin>
             <groupId>org.apache.karaf.tooling</groupId>
             <artifactId>karaf-maven-plugin</artifactId>
@@ -300,7 +321,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
                     <from>${docker.from}</from>
                     <assembly>
                       <basedir>/deployments</basedir>
-                      <user>jboss:jboss:jboss</user>
+                      <user>root:root:root</user>
                       <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
                               xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
                         <id>${project.artifactId}</id>
@@ -329,6 +350,18 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <build>
         <plugins>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*ModelProcessor.java</exclude>
+              </excludes>
+              <testExcludes>
+                <exclude>**/*KT.java</exclude>
+              </testExcludes>
+            </configuration>
+          </plugin>
+          <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>hawt-app-maven-plugin</artifactId>
             <version>${fabric8.version}</version>
@@ -356,6 +389,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
                     <from>${docker.from}</from>
                     <assembly>
                       <basedir>/deployments</basedir>
+                      <user>root:root:root</user>
                       <descriptorRef>hawt-app</descriptorRef>
                     </assembly>
                     <env>
@@ -371,5 +405,4 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       </build>
     </profile>
   </profiles>
-
 </project>
