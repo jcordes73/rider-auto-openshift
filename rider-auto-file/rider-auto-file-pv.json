@@ -1,0 +1,22 @@
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "rider-auto-file-pv",
+        "labels": {
+           "type": "local"
+        }
+    },
+    "spec": {
+        "hostPath": {
+            "path": "/tmp/rider-auto"
+        },
+        "accessModes": [
+            "ReadWriteOnce"
+        ],
+        "capacity": {
+            "storage": "100Ki"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
