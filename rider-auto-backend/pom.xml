@@ -282,13 +282,13 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
             <feature>activemq-camel</feature>
             <feature>camel-spring</feature>
             <feature>camel-bindy</feature>
+            <feature>camel-jaxb</feature>
           </startupFeatures>
           <startupBundles>
             <!--  this needs to be here for spring-dm to resolve properly!!-->
             <bundle>mvn:org.apache.karaf.bundle/org.apache.karaf.bundle.core/3.0.4</bundle>
             <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
             <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
-            <bundle>mvn:${project.groupId}/rider-auto-common/${project.version}</bundle>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
         </configuration>
