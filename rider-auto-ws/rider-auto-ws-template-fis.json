@@ -77,6 +77,41 @@
   ],
   "objects": [
     {
+      "apiVersion" : "v1",
+      "kind" : "Service",
+      "metadata" : {
+        "annotations" : {
+          "prometheus.io/port" : "9779",
+          "prometheus.io/scrape" : "true"
+        },
+        "labels" : {
+          "container" : "karaf",
+          "component" : "${APP_NAME}",
+          "provider" : "s2i",
+          "project" : "${APP_NAME}",
+          "version" : "${APP_VERSION}",
+          "group" : "rider-auto"
+        },
+        "name" : "rider-auto-ws"
+      },
+      "spec" : {
+        "deprecatedPublicIPs" : [ ],
+        "externalIPs" : [ ],
+        "ports" : [ {
+          "port" : 80,
+          "protocol" : "TCP",
+          "targetPort" : 8080
+        } ],
+        "selector" : {
+          "container" : "karaf",
+          "project" : "${APP_NAME}",
+          "component" : "${APP_NAME}",
+          "provider" : "s2i",
+          "group" : "rider-auto"
+        }
+      }
+    },
+    {
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
