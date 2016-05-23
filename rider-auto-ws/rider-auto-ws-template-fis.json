@@ -18,6 +18,11 @@
       "description": "Application Name"
     },
     {
+      "name": "APPLICATION_HOSTNAME",
+      "description": "Custom hostname for service routes.  Leave blank for default hostname, e.g.: <application-name>.<project>.<default-domain-suffix>",
+      "displayName": "Nexus instance hostname"
+    },
+    {
       "name": "GIT_REPO",
       "required": true,
       "description": "Git repository, required"
@@ -77,8 +82,22 @@
   ],
   "objects": [
     {
-      "apiVersion" : "v1",
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "rider-auto-ws"
+      },
+      "spec": {
+        "host": "${APPLICATION_HOSTNAME}",
+        "to": {
+          "kind": "Service",
+          "name": "rider-auto-ws"
+        }
+      }
+    },
+    {
       "kind" : "Service",
+      "apiVersion" : "v1",
       "metadata" : {
         "annotations" : {
           "prometheus.io/port" : "9779",
@@ -111,6 +130,7 @@
         }
       }
     },
+    
     {
       "kind": "ImageStream",
       "apiVersion": "v1",
