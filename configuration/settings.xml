@@ -27,21 +27,9 @@
       <id>fusesource.repo</id>
       <repositories>
         <repository>
-          <id>redhat.ga</id>
-          <name>Red Hat General Availability Repository</name>
-          <url>http://nexus.apps.example.com/content/repositories/redhat-ga</url>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-        </repository>
-        <repository>
-          <id>fusesource.m2</id>
-          <name>FuseSource Community Release Repository</name>
-          <url>http://nexus.apps.example.com/content/repositories/fusesource-public</url>
+          <id>apache.public</id>
+          <name>Apache Public</name>
+          <url>http://nexus.apps.example.com/content/repositories/apache-public</url>
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
@@ -63,9 +51,21 @@
           </releases>
         </repository>
         <repository>
-          <id>apache.public</id>
-          <name>Apache Public</name>
-          <url>http://nexus.apps.example.com/content/repositories/apache-public</url>
+          <id>fusesource.m2</id>
+          <name>FuseSource Community Release Repository</name>
+          <url>http://nexus.apps.example.com/content/repositories/fusesource-public</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+        </repository>
+        <repository>
+          <id>redhat.ga</id>
+          <name>Red Hat General Availability Repository</name>
+          <url>http://nexus.apps.example.com/content/repositories/redhat-ga</url>
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
@@ -77,21 +77,9 @@
       </repositories>
       <pluginRepositories>
         <pluginRepository>
-          <id>redhat.ga</id>
-          <name>Red Hat General Availability Repository</name>
-          <url>http://nexus.apps.example.com/content/repositories/redhat-ga</url>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-        </pluginRepository>
-        <pluginRepository>
-          <id>fusesource.m2</id>
-          <name>FuseSource Community Release Repository</name>
-          <url>http://nexus.apps.example.com/content/repositories/fusesource-public</url>
+          <id>apache.public</id>
+          <name>Apache Public</name>
+          <url>http://nexus.apps.example.com/content/repositories/apache-public</url>
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
@@ -113,9 +101,21 @@
           </releases>
         </pluginRepository>
         <pluginRepository>
-          <id>apache.public</id>
-          <name>Apache Public</name>
-          <url>http://nexus.apps.example.com/content/repositories/apache-public</url>
+          <id>fusesource.m2</id>
+          <name>FuseSource Community Release Repository</name>
+          <url>http://nexus.apps.example.com/content/repositories/fusesource-public</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+        </pluginRepository>
+        <pluginRepository>
+          <id>redhat.ga</id>
+          <name>Red Hat General Availability Repository</name>
+          <url>http://nexus.apps.example.com/content/repositories/redhat-ga</url>
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
