@@ -63,6 +63,10 @@
       "value": "-pl org.fusesource.examples:rider-auto-ws -am -Pkaraf-distro"
     },
     {
+      "name": "MAVEN_CLEAR_REPO",
+      "description": "If set, the local maven directory inside the Image will be cleared, leading to a reduced image size, but also to a redownload of artifacts in case of an incremental build."
+    },
+    {
       "name": "ARTIFACT_DIR",
       "description": "Maven build directory",
       "value": "rider-auto-ws/target/"
@@ -220,6 +224,10 @@
               {
                 "name": "MAVEN_ARGS_APPEND",
                 "value": "${MAVEN_ARGS_APPEND}"
+              },
+              {
+                "name": "MAVEN_CLEAR_REPO",
+                "value": "${MAVEN_CLEAR_REPO}"
               }
             ]
           }
