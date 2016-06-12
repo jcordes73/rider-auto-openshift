@@ -1,0 +1,2 @@
+#!/bin/bash
+source ${STI_SCRIPTS_PATH}/run
