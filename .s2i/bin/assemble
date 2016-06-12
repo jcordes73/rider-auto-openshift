@@ -1,3 +1,0 @@
-#!/bin/bash
-source /usr/local/s2i/assemble
-find /tmp/src -name target | xargs -I{} rm -rf {}
