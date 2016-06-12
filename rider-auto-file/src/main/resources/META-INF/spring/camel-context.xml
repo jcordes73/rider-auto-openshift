@@ -17,7 +17,7 @@
 
   <camelContext id="rider-auto-file-poller" trace="true" xmlns="http://camel.apache.org/schema/spring">
     <route id="file-to-jms">
-      <from uri="file:target/placeorder" />
+      <from uri="file:target/placeorder?fileName=.*\.txt" />
       <to uri="activemq:incomingOrders" />
     </route>
   </camelContext>
