@@ -1,2 +1,2 @@
 #!/bin/bash
-source ${STI_SCRIPTS_PATH}/run
+source /usr/local/s2i/run

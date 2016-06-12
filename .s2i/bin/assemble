@@ -1,5 +1,3 @@
 #!/bin/bash
-set
-find / -name assemble
-source ${STI_SCRIPTS_PATH}/assemble
+source /usr/local/s2i/assemble
 find /tmp/src -name target | xargs -I{} rm -rf {}
