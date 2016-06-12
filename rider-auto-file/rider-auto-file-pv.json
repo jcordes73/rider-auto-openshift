@@ -17,6 +17,6 @@
         "capacity": {
             "storage": "100Ki"
         },
-        "persistentVolumeReclaimPolicy": "Retain"
+        "persistentVolumeReclaimPolicy": "Recycle"
     }
 }
