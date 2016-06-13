@@ -41,7 +41,7 @@
       "name": "A_MQ_SERVICE_NAME",
       "required": true,
       "description": "JBoss A-MQ xPaaS service name",
-      "name": "broker"
+      "value": "broker"
     },
     {
       "name": "BUILDER_VERSION",
