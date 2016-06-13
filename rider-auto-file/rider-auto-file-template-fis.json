@@ -35,7 +35,8 @@
     {
       "name": "A_MQ_SERVICE_NAME",
       "required": true,
-      "description": "JBoss A-MQ xPaaS service name"
+      "description": "JBoss A-MQ xPaaS service name",
+      "value": "broker"
     },
     {
       "name": "BUILDER_VERSION",
@@ -59,7 +60,8 @@
     },
     {
       "name": "MAVEN_CLEAR_REPO",
-      "description": "If set, the local maven directory inside the Image will be cleared, leading to a reduced image size, but also to a redownload of artifacts in case of an incremental build."
+      "description": "If set, the local maven directory inside the Image will be cleared, leading to a reduced image size, but also to a redownload of artifacts in case of an incremental build.",
+      "value": "yes"
     },
     {
       "name": "ARTIFACT_DIR",
@@ -279,7 +281,7 @@
                 ],
                 "securityContext" : { },
                 "volumeMounts" : [ {
-                  "mountPath" : "/deployments/target/placeorder",
+                  "mountPath" : "/deployments/karaf/target/placeorder",
                   "name" : "rider-auto-file-volume",
                   "readOnly" : false
                 } ],
