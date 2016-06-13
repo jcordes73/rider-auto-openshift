@@ -8,7 +8,7 @@
             "kind": "Service",
             "metadata": {
                 "annotations": {
-                    "description": "The broker's OpenWire port."
+                    "description": "Rider-Auto OpenWire ActiveMQ broker port."
                 },
                 "labels": {
                     "application": "broker",

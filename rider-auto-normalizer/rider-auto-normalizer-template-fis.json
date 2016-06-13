@@ -6,7 +6,7 @@
     "annotations": {
       "Description": "Normalizer part of the Rider-Auto JBoss Fuse demo on OpenShift Enterprise.",
       "iconClass": "icon-java",
-      "fabric8.rider-auto-normalizer/iconUrl" : "https://cdn.rawgit.com/fabric8io/fabric8/master/fabric8-maven-plugin/src/main/resources/icons/camel.svg"
+      "tags": "instant-app,java"
     },
     "labels": {},
     "name": "rider-auto-normalizer"
@@ -20,7 +20,8 @@
     {
       "name": "GIT_REPO",
       "required": true,
-      "description": "Git repository, required"
+      "description": "Git repository, required",
+      "value": "https://github.com/jcordes73/rider-auto-openshift.git"
     },
     {
       "name": "GIT_REF",
