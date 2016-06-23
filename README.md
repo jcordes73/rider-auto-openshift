@@ -92,7 +92,7 @@ oc get scc hostaccess -o json \
         | oc replace scc hostaccess -f -
 oc login -u developer
 oc new-project rider-auto --display-name="Dev project"
-oc create -f amq.json
+oc new-app -f amq.json
 oc new-app -f rider-auto-backend/rider-auto-backend-template-fis.json
 oc new-app -f rider-auto-normalizer/rider-auto-normalizer-template-fis.json
 oc new-app -f rider-auto-file/rider-auto-file-template-fis.json
@@ -125,7 +125,7 @@ oc tag rider-auto/rider-auto-ws:latest rider-auto-ws:promote
 
 oc login -u tester
 oc new-project rider-auto-testing --display-name="QA project"
-oc create -f amq.json
+oc new-app -f amq.json
 oc new-app rider-auto/rider-auto-backend:promote
 oc new-app rider-auto/rider-auto-normalizer:promote
 oc new-app rider-auto/rider-auto-file:promote
