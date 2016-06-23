@@ -9,7 +9,7 @@ of Docker which is crucial for a microservices style deployment.
 Note, this project is currently focused on using the productized (Red Hat supported) versions of the FIS (Fuse integration services) libraries and frameworks from the [http://fabric8.io](http://fabric8.io) project. The following versions of community projects can be expected in the productized release (please check the Red Hat documentation for official guidance on versions)
 
 Project                                    | Version                   |
--------------------------------------------|:-------------------------:|
+-------------------------------------------|---------------------------|
 | [Apache Camel][camel]                    | 2.15.1.redhat-621084      |
 | [Apache ActiveMQ][activemq]              | 5.11.0.redhat-621084      |
 | [Apache CXF][cxf]                        | 3.0.4.redhat-621084       |
@@ -76,41 +76,63 @@ This project ends up building a few important things:
 * [rider-auto-backend](rider-auto-backend/README.md)
 * [rider-auto-normalizer](rider-auto-normalizer/README.md)
 
-## Deploy A-MQ
-This example uses JBoss A-MQ, so we need to have that running in the same project/namespace as the rider-auto apps (including this module).
-To deploy AMQ, follow the [instructions from the xPaaS AMQ documentation](https://docs.openshift.com/enterprise/3.1/using_images/xpaas_images/a_mq.html). On the CDK, you can do this:
+### Deploy A-MQ and Rider-Auto demo on OpenShift
 
-### Create a template for JBoss A-MQ
-
-> oc create -f https://raw.githubusercontent.com/openshift/openshift-ansible/master/roles/openshift_examples/files/examples/v1.1/xpaas-templates/amq62-basic.json
-> oc process amq62-basic -v APPLICATION_NAME=broker -v MQ_USERNAME=admin -v MQ_PASSWORD=admin 
-  
-Or you can use the template i've included in the root of this project:
-
-> oc create -f amq.json
+To deploy A-MQ and the Rider-Auto demo on OpenShift, follow these steps:
 
 ```
-service "broker-amq-tcp" created
-deploymentconfig "broker-amq" created
+oc login -u system:admin
+mkdir -p /tmp/rider-auto
+chmod 777 /tmp/rider-auto
+chown -R 185:root /tmp/rider-auto
+chcon -u system_u -r object_r -t svirt_sandbox_file_t -l s0 /tmp/rider-auto
+oc create -f rider-auto-file/rider-auto-file-pv.json
+oc get scc hostaccess -o json \
+        | sed '/\"users\"/a \"system:serviceaccount:rider-auto:jboss\",'  \
+        | oc replace scc hostaccess -f -
+oc login -u developer
+oc new-project rider-auto --display-name="Dev project"
+oc create -f amq.json
+oc new-app -f rider-auto-backend/rider-auto-backend-template-fis.json
+oc new-app -f rider-auto-normalizer/rider-auto-normalizer-template-fis.json
+oc new-app -f rider-auto-file/rider-auto-file-template-fis.json
+oc new-app -f rider-auto-ws/rider-auto-ws-template-fis.json
 ```
 
-Note: as a user of the CDK, you may need cluster-admin rights by using the config file in /var/lib/origin/openshift.local.config/master/admin.kubeconfig. If you copy this to your ~/.kube/config file or set the location to it in $KUBECONFIG environment variable, you should be granted full cluster-admin rights and should be able to create the AMQ image.  It is best to first login to the vagrant from your host machine:
+For **oc new-app** you may override the following paramters (by using -p):
 
-> vagrant ssh
+Parameter                     | Default                                               |
+------------------------------|-------------------------------------------------------|
+| GIT_REPO                    | https://github.com/jcordes73/rider-auto-openshift.git |
+| A_MQ_SERVICE_NAME           | broker                                                |
 
-Then sudo to root
-  
-> sudo -s
 
-Then login to OpenShift using the "system:admin" superuser on a dedicated admin interface (10.0.2.15):
+Now you should be able to access the web-service at http://rider-auto-ws-rider-auto.apps.example.com/cxf/order?wsdl.
 
-> oc login -u system:admin https://10.0.2.15:8443
+To test the file-sercice, do the following:
+```
+cp rider-auto-common/src/data/message1.xml /tmp/rider-auto/
+```
 
-Now you can create the AMQ service by running the following command (after copying and pasting the amq.json file to your root directory):
-   
-> oc create -f amq.json
+To stage the images from dev to test, follow these steps
+```
+oc policy add-role-to-user view tester
+oc policy add-role-to-group system:image-puller system:serviceaccounts:rider-auto-testing -n rider-auto
+oc tag rider-auto/rider-auto-backend:latest rider-auto-backend:promote
+oc tag rider-auto/rider-auto-normalizer:latest rider-auto-normalizer:promote
+oc tag rider-auto/rider-auto-file:latest rider-auto-file:promote
+oc tag rider-auto/rider-auto-ws:latest rider-auto-ws:promote
 
-Note that the user name and password need to be `admin/admin` as that's what the rider-auto-osgi project expects.
+oc login -u tester
+oc new-project rider-auto-testing --display-name="QA project"
+oc create -f amq.json
+oc new-app rider-auto/rider-auto-backend:promote
+oc new-app rider-auto/rider-auto-normalizer:promote
+oc new-app rider-auto/rider-auto-file:promote
+oc new-app rider-auto/rider-auto-ws:promote
+oc delete svc rider-auto-ws
+oc expose dc rider-auto-ws --port=80 --protocol=TCP --target-port=8080
+```
 
 ### Install on a local JBoss Fuse 6.2.1 
 

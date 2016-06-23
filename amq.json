@@ -1,8 +1,20 @@
 {
-    "kind": "List",
     "apiVersion": "v1",
-    "metadata": {},
-    "items": [
+    "kind": "Template",
+    "labels": {
+    },
+    "metadata": {
+        "annotations": {
+            "Description": "ActiveMQ Broker for the Rider-Auto JBoss Fuse demo on OpenShift Enterprise.",
+            "iconClass": "icon-java",
+            "tags": "instant-app,java,amq"
+        },
+        "labels": {
+
+        },
+        "name": "rider-auto-amq"
+    },
+    "objects": [
         {
             "apiVersion": "v1",
             "kind": "Service",
