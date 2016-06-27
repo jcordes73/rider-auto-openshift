@@ -1,0 +1,14 @@
+#!/bin/bash
+
+CONF_DIR=/etc/fis-config
+
+# Copy configuration files
+if [ -d "${CONF_DIR}" ]; then
+   
+   echo "Copying config properties"
+
+   cp -v --no-preserve=all ${CONF_DIR}/* /deployments/karaf/etc
+
+fi
+ 
+/usr/local/s2i/run  
