@@ -6,15 +6,19 @@
                            http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
                            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
+  <bean id="properties" class="org.apache.camel.component.properties.PropertiesComponent">
+    <property name="location" value="${karaf.home}/etc/org.fusesource.example.rider-auto-ws.cfg"/>
+  </bean>
+
   <!-- Set username and password to values you set in etc/user.properties -->
   <bean id="activemq" class="io.fabric8.mq.camel.AMQComponent" >
     <property name="connectionFactory" ref="connectionFactory"/>
-    <property name="serviceName" value="broker"/>
+    <property name="serviceName" value="${org.fusesource.example.rider-auto-ws.broker.serviceName}"/>
   </bean>
 
   <bean id="connectionFactory" class="io.fabric8.mq.core.MQConnectionFactory">
-    <property name="userName" value="admin"/>
-    <property name="password" value="admin"/>
+    <property name="userName" value="${org.fusesource.example.rider-auto-ws.broker.userName}"/>
+    <property name="password" value="${org.fusesource.example.rider-auto-ws.broker.password}"/>
   </bean>
 
   <cxf:cxfEndpoint id="orderEndpoint"

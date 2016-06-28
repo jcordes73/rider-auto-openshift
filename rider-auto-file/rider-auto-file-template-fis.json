@@ -285,7 +285,8 @@
                   "mountPath" : "/deployments/karaf/target/placeorder",
                   "name" : "rider-auto-file-volume",
                   "readOnly" : false
-                } ],
+                }
+                ],
                 "resources": {}
               }
             ],
@@ -297,7 +298,8 @@
                 "claimName" : "rider-auto-file-pvc",
                 "readOnly" : false
               }
-            } ]
+            }
+            ]
           }
         }
       },

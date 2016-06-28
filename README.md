@@ -97,6 +97,16 @@ oc new-app -f rider-auto-backend/rider-auto-backend-template-fis.json
 oc new-app -f rider-auto-normalizer/rider-auto-normalizer-template-fis.json
 oc new-app -f rider-auto-file/rider-auto-file-template-fis.json
 oc new-app -f rider-auto-ws/rider-auto-ws-template-fis.json
+
+oc secret new fis-config-rider-auto-backend rider-auto-backend/src/main/resources/org.fusesource.examples.rider-auto-backend.cfg
+oc secret new fis-config-rider-auto-normalizer rider-auto-normalizer/src/main/resources/org.fusesource.examples.rider-auto-normalizer.cfg
+oc secret new fis-config-rider-auto-file rider-auto-file/src/main/resources/org.fusesource.examples.rider-auto-file.cfg
+oc secret new fis-config-rider-auto-ws rider-auto-ws/src/main/resources/org.fusesource.examples.rider-auto-ws.cfg
+
+oc volume dc/rider-auto-backend --add --type=secret --secret-name=fis-config-rider-auto-backend -m /etc/fis-config
+oc volume dc/rider-auto-normalizer --add --type=secret --secret-name=fis-config-rider-auto-normalizer -m /etc/fis-config
+oc volume dc/rider-auto-file --add --type=secret --secret-name=fis-config-rider-auto-file -m /etc/fis-config
+oc volume dc/rider-auto-ws --add --type=secret --secret-name=fis-config-rider-auto-ws -m /etc/fis-config
 ```
 
 For **oc new-app** you may override the following paramters (by using -p):
