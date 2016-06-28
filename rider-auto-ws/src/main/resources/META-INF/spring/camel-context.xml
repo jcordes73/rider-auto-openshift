@@ -6,8 +6,8 @@
                            http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
                            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-  <bean id="properties" class="org.apache.camel.component.properties.PropertiesComponent">
-    <property name="location" value="${karaf.home}/etc/org.fusesource.example.rider-auto-ws.cfg"/>
+  <bean id="properties" class="org.apache.camel.spring.spi.BridgePropertyPlaceholderConfigurer">
+    <property name="location" value="file:${karaf.home}/etc/org.fusesource.example.rider-auto-ws.cfg"/>
   </bean>
 
   <!-- Set username and password to values you set in etc/user.properties -->
