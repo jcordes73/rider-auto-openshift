@@ -308,6 +308,14 @@
             }
           },
           "spec": {
+            "volumes": [
+              {
+                "name": "fis-config",
+                "secret": {
+                   "secretName": "fis-config-rider-auto-ws"
+                }
+              }
+            ],
             "containers": [
               {
                 "name": "${APP_NAME}",
@@ -337,6 +345,12 @@
                   {
                     "containerPort" : 8080,
                     "name" : "soap"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "fis-config",
+                    "mountPath": "/etc/fis-config"
                   }
                 ],
                 "resources": {}

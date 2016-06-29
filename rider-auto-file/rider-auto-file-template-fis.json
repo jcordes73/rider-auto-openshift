@@ -285,6 +285,10 @@
                   "mountPath" : "/deployments/karaf/target/placeorder",
                   "name" : "rider-auto-file-volume",
                   "readOnly" : false
+                },
+                {
+                  "name": "fis-config",
+                  "mountPath": "/etc/fis-config"
                 }
                 ],
                 "resources": {}
@@ -297,6 +301,12 @@
               "persistentVolumeClaim" : {
                 "claimName" : "rider-auto-file-pvc",
                 "readOnly" : false
+              }
+            },
+            {
+              "name": "fis-config",
+              "secret": {
+                 "secretName": "fis-config-rider-auto-file"
               }
             }
             ]

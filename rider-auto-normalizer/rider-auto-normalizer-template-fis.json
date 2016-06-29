@@ -253,6 +253,14 @@
             }
           },
           "spec": {
+            "volumes": [
+              {
+                "name": "fis-config",
+                "secret": {
+                   "secretName": "fis-config-rider-auto-normalizer"
+                }
+              }
+            ],
             "containers": [
               {
                 "name": "${APP_NAME}",
@@ -278,6 +286,12 @@
                   {
                     "containerPort": 8778,
                     "name": "jolokia"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "fis-config",
+                    "mountPath": "/etc/fis-config"
                   }
                 ],
                 "resources": {}
