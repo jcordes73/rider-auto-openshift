@@ -118,6 +118,12 @@ To test the file-sercice, do the following:
 cp rider-auto-common/src/data/message1.xml /tmp/rider-auto/
 ```
 
+### Staging images
+
+How to stage images is described in the article [Promoting Applications Across Environments](https://blog.openshift.com/promoting-applications-across-environments/)
+
+![Staging Images](https://blog.openshift.com/wp-content/uploads/Screen-Shot-2015-10-13-at-11.46.38-AM.png)
+
 To stage the images from dev to test, follow these steps
 ```
 oc policy add-role-to-user view tester
