@@ -4,7 +4,7 @@
   "labels": {},
   "metadata": {
     "annotations": {
-      "Description": "Webservice part of the Rider-Auto JBoss Fuse demo on OpenShift Enterprise.",
+      "Description": "Webservice part of the Rider-Auto JBoss Fuse demo on OpenShift Enterprise. This is the promotion template.",
       "iconClass": "icon-java",
       "tags": "instant-app,java"
     },
@@ -23,17 +23,6 @@
       "displayName": "Nexus instance hostname"
     },
     {
-      "name": "GIT_REPO",
-      "required": true,
-      "description": "Git repository, required",
-      "value": "https://github.com/jcordes73/rider-auto-openshift.git"
-    },
-    {
-      "name": "GIT_REF",
-      "value": "master",
-      "description": "Git ref to build"
-    },
-    {
       "name": "SERVICE_NAME",
       "value": "rider-auto-ws",
       "description": "Exposed Service name"
@@ -45,46 +34,19 @@
       "value": "broker"
     },
     {
-      "name": "BUILDER_VERSION",
-      "value": "1.0",
-      "description": "Builder version"
-    },
-    {
       "name": "APP_VERSION",
       "value": "5.0-SNAPSHOT",
       "description": "Application version"
     },
     {
-      "name": "MAVEN_ARGS",
-      "value": "install -DskipTests -e",
-      "description": "Arguments passed to mvn in the build"
+      "name": "PROMOTION_NAMESPACE",
+      "value": "rider-auto",
+      "description": "The namespace to promote."
     },
     {
-      "name": "MAVEN_ARGS_APPEND",
-      "description": "Extra arguments passed to mvn, e.g. for multi-module builds",
-      "value": "-pl org.fusesource.examples:rider-auto-ws -am -Pkaraf-distro"
-    },
-    {
-      "name": "MAVEN_CLEAR_REPO",
-      "description": "If set, the local maven directory inside the Image will be cleared, leading to a reduced image size, but also to a redownload of artifacts in case of an incremental build.",
-      "value": "yes"
-    },
-    {
-      "name": "ARTIFACT_DIR",
-      "description": "Maven build directory",
-      "value": "rider-auto-ws/target/"
-    },
-    {
-      "description": "Namespace in which the Fuse ImageStreams are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project.",
-      "name": "IMAGE_STREAM_NAMESPACE",
-      "value": "openshift",
-      "required": true
-    },
-    {
-      "generate": "expression",
-      "name": "BUILD_SECRET",
-      "description": "The secret needed to trigger a build",
-      "from": "[a-zA-Z0-9]{8}"
+      "name": "PROMOTION_IMAGE_TAG",
+      "value": "promote",
+      "description": "The name of the image-tag to promote."
     }
   ],
   "objects": [
@@ -137,116 +99,6 @@
         }
       }
     },
-    
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${APP_NAME}",
-        "creationTimestamp": null,
-        "labels": {
-          "component": "${APP_NAME}",
-          "container": "karaf",
-          "group": "rider-auto",
-          "project": "${APP_NAME}",
-          "provider": "s2i",
-          "version": "${APP_VERSION}"
-        }
-      },
-      "spec": {},
-      "status": {
-        "dockerImageRepository": ""
-      }
-    },
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${APP_NAME}",
-        "creationTimestamp": null,
-        "labels": {
-          "component": "${APP_NAME}",
-          "container": "karaf",
-          "group": "rider-auto",
-          "project": "${APP_NAME}",
-          "provider": "s2i",
-          "version": "${APP_VERSION}"
-        }
-      },
-      "spec": {
-        "triggers": [
-          {
-            "type": "GitHub",
-            "github": {
-              "secret": "${BUILD_SECRET}"
-            }
-          },
-          {
-            "type": "Generic",
-            "generic": {
-              "secret": "${BUILD_SECRET}"
-            }
-          },
-          {
-            "type": "ConfigChange"
-          },
-          {
-            "type": "ImageChange",
-            "imageChange": {}
-          }
-        ],
-        "source": {
-          "type": "Git",
-          "git": {
-            "uri": "${GIT_REPO}",
-            "ref": "${GIT_REF}"
-          }
-        },
-        "strategy": {
-          "type": "Source",
-          "sourceStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "namespace": "${IMAGE_STREAM_NAMESPACE}",
-              "name": "fis-karaf-openshift:${BUILDER_VERSION}"
-            },
-            "forcePull": true,
-            "env": [
-              {
-                "name": "BUILD_LOGLEVEL",
-                "value": "5"
-              },
-              {
-                "name": "ARTIFACT_DIR",
-                "value": "${ARTIFACT_DIR}"
-              },
-              {
-                "name": "MAVEN_ARGS",
-                "value": "${MAVEN_ARGS}"
-              },
-              {
-                "name": "MAVEN_ARGS_APPEND",
-                "value": "${MAVEN_ARGS_APPEND}"
-              },
-              {
-                "name": "MAVEN_CLEAR_REPO",
-                "value": "${MAVEN_CLEAR_REPO}"
-              }
-            ]
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "${APP_NAME}:latest"
-          }
-        },
-        "resources": {}
-      },
-      "status": {
-        "lastVersion": 0
-      }
-    },
     {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
@@ -279,7 +131,8 @@
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${APP_NAME}:latest"
+                "name": "${APP_NAME}:${PROMOTION_IMAGE_TAG}",
+                "namespace": "${PROMOTION_NAMESPACE}"
               }
             }
           }
@@ -319,7 +172,7 @@
             "containers": [
               {
                 "name": "${APP_NAME}",
-                "image": "library/${APP_NAME}:latest",
+                "image": "library/${APP_NAME}:${PROMOTION_IMAGE_TAG}",
                 "readinessProbe": {
                   "exec": {
                     "command": [

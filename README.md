@@ -135,11 +135,15 @@ oc tag rider-auto/rider-auto-ws:latest rider-auto-ws:promote
 
 oc login -u tester
 oc new-project rider-auto-testing --display-name="QA project"
+oc secret new fis-config-rider-auto-backend rider-auto-backend/src/main/resources/org.fusesource.examples.rider-auto-backend.cfg
+oc secret new fis-config-rider-auto-normalizer rider-auto-normalizer/src/main/resources/org.fusesource.examples.rider-auto-normalizer.cfg
+oc secret new fis-config-rider-auto-file rider-auto-file/src/main/resources/org.fusesource.examples.rider-auto-file.cfg
+oc secret new fis-config-rider-auto-ws rider-auto-ws/src/main/resources/org.fusesource.examples.rider-auto-ws.cfg
 oc new-app -f amq.json
-oc new-app rider-auto/rider-auto-backend:promote
-oc new-app rider-auto/rider-auto-normalizer:promote
-oc new-app rider-auto/rider-auto-file:promote
-oc new-app rider-auto/rider-auto-ws:promote
+oc new-app -f rider-auto-backend/rider-auto-backend-staging-template-fis.json
+oc new-app -f rider-auto-normalizer/rider-auto-normalizer-staging-template-fis.json
+oc new-app -f rider-auto-file/rider-auto-file-staging-template-fis.json
+oc new-app -f rider-auto-ws/rider-auto-ws-staging-template-fis.json
 oc delete svc rider-auto-ws
 oc expose dc rider-auto-ws --port=80 --protocol=TCP --target-port=8080
 ```

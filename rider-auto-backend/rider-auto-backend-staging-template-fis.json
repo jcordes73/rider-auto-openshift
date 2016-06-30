@@ -1,0 +1,160 @@
+{
+  "apiVersion": "v1",
+  "kind": "Template",
+  "labels": {},
+  "metadata": {
+    "annotations": {
+      "Description": "Backend part of the Rider-Auto JBoss Fuse demo on OpenShift Enterprise. This is the promotion template.",
+      "iconClass": "icon-java",
+      "tags": "instant-app,java"
+    },
+    "labels": {},
+    "name": "rider-auto-backend"
+  },
+  "parameters": [
+    {
+      "name": "APP_NAME",
+      "value": "rider-auto-backend",
+      "description": "Application Name"
+    },
+    {
+      "name": "SERVICE_NAME",
+      "value": "rider-auto-backend",
+      "description": "Exposed Service name"
+    },
+    {
+      "name": "A_MQ_SERVICE_NAME",
+      "required": true,
+      "description": "JBoss A-MQ xPaaS service name",
+      "value": "broker"
+    },
+    {
+      "name": "APP_VERSION",
+      "value": "5.0-SNAPSHOT",
+      "description": "Application version"
+    },
+    {
+      "name": "PROMOTION_NAMESPACE",
+      "value": "rider-auto",
+      "description": "The namespace to promote."
+    },
+    {
+      "name": "PROMOTION_IMAGE_TAG",
+      "value": "promote",
+      "description": "The name of the image-tag to promote."
+    }
+  ],
+  "objects": [
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${APP_NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${APP_NAME}",
+          "container": "karaf",
+          "group": "rider-auto",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "resources": {}
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "${APP_NAME}"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${APP_NAME}:${PROMOTION_IMAGE_TAG}",
+                "namespace": "${PROMOTION_NAMESPACE}"
+              }
+            }
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "component": "${APP_NAME}",
+          "container": "karaf",
+          "deploymentconfig": "${APP_NAME}",
+          "group": "rider-auto",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "component": "${APP_NAME}",
+              "container": "karaf",
+              "deploymentconfig": "${APP_NAME}",
+              "group": "rider-auto",
+              "project": "${APP_NAME}",
+              "provider": "s2i",
+              "version": "${APP_VERSION}"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "fis-config",
+                "secret": {
+                   "secretName": "fis-config-rider-auto-backend"
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "${APP_NAME}",
+                "image": "library/${APP_NAME}:${PROMOTION_IMAGE_TAG}",
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "/bin/bash",
+                      "-c",
+                      "(curl -f 127.0.0.1:8778) >/dev/null 2>&1; test $? != 7"
+                    ]
+                  },
+                  "initialDelaySeconds": 30,
+                  "timeoutSeconds": 5
+                },
+                "env": [
+                    {
+                      "name": "A_MQ_SERVICE_NAME",
+                      "value": "${A_MQ_SERVICE_NAME}"
+                    }
+                ],
+                "ports": [
+                  {
+                    "containerPort": 8778,
+                    "name": "jolokia"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "fis-config",
+                    "mountPath": "/etc/fis-config"
+                  }
+                ],
+                "resources": {}
+              }
+            ]
+          }
+        }
+      },
+      "status": {}
+    }
+  ]
+}
