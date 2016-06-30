@@ -14,6 +14,18 @@
         },
         "name": "rider-auto-amq"
     },
+    "parameters": [
+        {
+            "name": "AMQ_USER",
+            "value": "admin",
+            "description": "A-MQ admin username"
+        },
+        {
+            "name": "AMQ_PASSWORD",
+            "value": "admin",
+            "description": "A-MQ admin password"
+        }
+    ],
     "objects": [
         {
             "apiVersion": "v1",
@@ -74,11 +86,11 @@
                                 "env": [
                                     {
                                         "name": "AMQ_USER",
-                                        "value": "admin"
+                                        "value": "${AMQ_USER}"
                                     },
                                     {
                                         "name": "AMQ_PASSWORD",
-                                        "value": "admin"
+                                        "value": "${AMQ_PASSWORD}"
                                     },
                                     {
                                         "name": "AMQ_TRANSPORTS",
